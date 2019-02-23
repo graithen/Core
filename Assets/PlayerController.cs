@@ -123,6 +123,7 @@ public class PlayerController : MonoBehaviour
             Damage2[1].SetActive(true);
             Damage2[0].SetActive(false);
         }
-        
+        if (damage > 2)
+            this.gameObject.SetActive(false);
     }
 }

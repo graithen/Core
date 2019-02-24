@@ -1774,7 +1774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3f8c23b58e23a1479e18b7bb8450a5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LightVoid: 0
+  LightVoid: 1
   LightStateObjects:
   - {fileID: 1252064662}
   DarkStateObjects:

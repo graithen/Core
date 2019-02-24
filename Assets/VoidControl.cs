@@ -44,6 +44,11 @@ public class VoidControl : MonoBehaviour
         Movement();
     }
 
+    private void FixedUpdate()
+    {
+        Control();
+    }
+
     IEnumerator Firing ()
     {
         while (true)
@@ -128,5 +133,13 @@ public class VoidControl : MonoBehaviour
             darkState = controllerScript.DarkState;
             doOnce = true;
         }
+    }
+
+    void Control ()
+    {
+        Vector3 fwd = transform.TransformDirection(Vector3.forward);
+
+        if (Physics.Raycast(transform.position, fwd, 100) == ParentController)
+            Debug.Log("Can see player");
     }
 }

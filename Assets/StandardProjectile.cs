@@ -12,7 +12,7 @@ public class StandardProjectile : MonoBehaviour
     public float MovementSpeed = 10;
     public float GrowthRate = 0.02f;
     private float storedGrowthRate;
-    private float storedMovementSpeed;
+    private Vector2 storedMovementVelocity;
 
 
     public bool CanMove;
@@ -38,7 +38,6 @@ public class StandardProjectile : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         collider = GetComponent<CircleCollider2D>();
         storedGrowthRate = GrowthRate;
-        storedMovementSpeed = MovementSpeed;
     }
 
     // Update is called once per frame
@@ -76,27 +75,26 @@ public class StandardProjectile : MonoBehaviour
         //---Movement speed changes if LightVoid selected---
         if (darkState && !DarkBullet && doOnce)
         {
-            MovementSpeed = MovementSpeed / 15;
+            rb.velocity = rb.velocity / 15;
             GrowthRate = GrowthRate / 15;
             doOnce = false;
         }
         if (!darkState && !DarkBullet && doOnce)
         {
-            MovementSpeed = storedMovementSpeed;
+            rb.velocity = storedMovementVelocity;
             GrowthRate = storedGrowthRate;
             doOnce = false;
         }
         //---Movement speed changes if DarkVoid selected---
         if (!darkState && DarkBullet && doOnce)
         {
-            MovementSpeed = MovementSpeed / 15;
+            rb.velocity = rb.velocity / 15;
             GrowthRate = GrowthRate / 15;
             doOnce = false;
         }
         if (darkState && DarkBullet && doOnce)
         {
-            Debug.Log("Recovering bullet speeds");
-            MovementSpeed = storedMovementSpeed;
+            rb.velocity = storedMovementVelocity;
             GrowthRate = storedGrowthRate;
             doOnce = false;
         }
@@ -158,6 +156,13 @@ public class StandardProjectile : MonoBehaviour
                     darkObject.SetActive(false);
                 }
             }
+
+            if (DarkBullet && darkState)
+                storedMovementVelocity = rb.velocity; //store movement velocity before change
+
+            if (!DarkBullet && !darkState)
+                storedMovementVelocity = rb.velocity; //store movement velocity before change
+
             darkState = controllerScript.DarkState;
             doOnce = true;
         }

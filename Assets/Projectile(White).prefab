@@ -220,7 +220,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DarkBullet: 0
   Player: {fileID: 0}
-  MovementSpeed: 10
+  MovementSpeed: 7
   GrowthRate: 0.002
   CanMove: 0
   ParentSpawner: {fileID: 0}

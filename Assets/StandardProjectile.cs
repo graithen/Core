@@ -32,6 +32,8 @@ public class StandardProjectile : MonoBehaviour
 
     bool addForce = true;
 
+    public bool canKillEnemy;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,6 +54,11 @@ public class StandardProjectile : MonoBehaviour
             ChangeDarkState();
             Movement();
             CollisionControl();
+        }
+
+        if (ParentEnemy == null) //catches when a projectile is left parentless before firing, and deletes
+        {
+            Destroy(gameObject);
         }
     }
 
@@ -170,14 +177,20 @@ public class StandardProjectile : MonoBehaviour
 
     void CollisionControl()
     {
-        if (darkState && DarkBullet)
-            collider.enabled = true;
-        if (!darkState && DarkBullet)
+        if (CanMove)
+        {
+            if (darkState && DarkBullet)
+                collider.enabled = true;
+            if (!darkState && DarkBullet)
+                collider.enabled = false;
+            if (!darkState && !DarkBullet)
+                collider.enabled = true;
+            if (darkState && !DarkBullet)
+                collider.enabled = false;
+        }
+        if (!CanMove)
+        {
             collider.enabled = false;
-        if (!darkState && !DarkBullet)
-            collider.enabled = true;
-        if (darkState && !DarkBullet)
-            collider.enabled = false;
-
+        }
     }
 }

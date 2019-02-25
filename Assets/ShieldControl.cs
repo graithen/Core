@@ -22,4 +22,15 @@ public class ShieldControl : MonoBehaviour
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
     }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log(collision.gameObject.name);
+        if (collision.gameObject.tag == "DamageObject")
+        {
+            collision.gameObject.GetComponent<StandardProjectile>().canKillEnemy = true;
+            Debug.Log("Projectile armed");
+        }
+    }
 }

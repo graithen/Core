@@ -31,8 +31,9 @@ public class VoidControl : MonoBehaviour
     {
         StoredMovementSpeed = MovementSpeed; //store movement speed to recover later
 
+        ParentController = GameObject.FindGameObjectWithTag("Player");
         controllerScript = ParentController.GetComponent<PlayerController>();
-        darkState = controllerScript.DarkState;
+        DarkChange();
 
         StartCoroutine(Firing());
     }
@@ -44,16 +45,17 @@ public class VoidControl : MonoBehaviour
         Movement();
     }
 
-    private void FixedUpdate()
+    IEnumerator StaggerFiring()
     {
-        Control();
+        yield return new WaitForSeconds(Random.Range(0, 3));
+        StartCoroutine(Firing());
     }
 
     IEnumerator Firing ()
     {
         while (true)
         {
-            Debug.Log("Starting to fire");
+            //Debug.Log("Starting to fire");
             yield return new WaitForSeconds(5);
             projectile = Instantiate(Projectile, Spawner.transform.position, transform.rotation);
             StandardProjectile projectileScript = projectile.GetComponent<StandardProjectile>();
@@ -133,13 +135,5 @@ public class VoidControl : MonoBehaviour
             darkState = controllerScript.DarkState;
             doOnce = true;
         }
-    }
-
-    void Control ()
-    {
-        Vector3 fwd = transform.TransformDirection(Vector3.forward);
-
-        if (Physics.Raycast(transform.position, fwd, 100) == ParentController)
-            Debug.Log("Can see player");
     }
 }

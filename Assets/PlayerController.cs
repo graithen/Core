@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
     public GameObject[] Damage1;
     public GameObject[] Damage2;
-
+    public GameObject DeathParticles;
 
 
     // Start is called before the first frame update
@@ -124,6 +124,9 @@ public class PlayerController : MonoBehaviour
             Damage2[0].SetActive(false);
         }
         if (damage > 2)
+        {
+            Instantiate(DeathParticles, transform.position, transform.rotation);
             this.gameObject.SetActive(false);
+        }   
     }
 }

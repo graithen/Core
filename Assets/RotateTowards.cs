@@ -6,12 +6,15 @@ public class RotateTowards : MonoBehaviour
 {
     public float RotationSpeed = 5;
     public GameObject Player;
+    public GameObject DeathParticles;
 
     Vector2 target;
 
     // Update is called once per frame
     void Update()
     {
+        Player = GameObject.FindGameObjectWithTag("Player");
+
         if (Player != null)
         {
             target = Player.transform.position;
@@ -21,5 +24,16 @@ public class RotateTowards : MonoBehaviour
             Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             transform.rotation = Quaternion.Slerp(transform.rotation, rotation, RotationSpeed * Time.deltaTime);
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "DamageObject")
+            if (collision.gameObject.GetComponent<StandardProjectile>().canKillEnemy)
+            {
+                Instantiate(DeathParticles, transform.position, transform.rotation);
+                GameObject.FindWithTag("MainCamera").GetComponent<RestartLevel>().score++; //Hack to push score!!! BAD CODE!!!
+                Destroy(transform.parent.gameObject);
+            }
     }
 }
